@@ -7,22 +7,28 @@
 
 import SwiftUI
 
-enum DirectionsEnum {
+enum Directions: String, Codable {
     case forward
     case backward
 }
 
-struct SceneControllers: View {
-    @Binding var scene: ScenesEnum
+struct SceneController: View {
+    @EnvironmentObject var storyData: StoryData
+    @Binding var scene: SceneKey
     @Binding var sceneCounter: Int
     
     var storyNode: StoryNode {
-        StoryData.nodes[scene]!
+        storyData.nodes[scene]!
     }
     
     var body: some View {
         VStack {
             ForEach(storyNode.directions, id: \.self) { direction in
+                
+                if storyNode.directions.count == 1 && direction == .backward {
+                    Spacer()
+                }
+                
                 Button {
                     switch direction {
                     case .forward:
@@ -37,6 +43,7 @@ struct SceneControllers: View {
                         .fill(Color.red)
                         .frame(width: 50, height: 50)
                 }
+                
                 if direction == .forward {
                     Spacer()
                 }
@@ -49,7 +56,9 @@ struct SceneControllers: View {
         case 0:
             scene = .livingRoom
         case 1:
-            scene = .hallway
+            scene = .stairs
+        case 2:
+            scene = .basement
         default:
             break
         }

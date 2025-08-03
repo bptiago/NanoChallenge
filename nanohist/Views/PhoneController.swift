@@ -8,7 +8,9 @@
 import SwiftUI
 
 struct PhoneController: View {
+    @State var isInputEnabled = false
     @State var isShowing = false
+    @State var message: String = ""
     
     var body: some View {
         VStack {
@@ -16,11 +18,21 @@ struct PhoneController: View {
             HStack(alignment: .bottom) {
                 
                 if isShowing {
-                    Rectangle()
-                        .frame(width: 100, height: 200)
-                        .transition(.move(edge: .bottom).combined(with: .opacity))
+                    ZStack {
+                        Rectangle()
+                            .transition(.move(edge: .bottom).combined(with: .opacity))
+                        
+                        TextField("", text: $message, axis: .vertical)
+                            .foregroundStyle(.white)
+                            .textInputAutocapitalization(.never)
+                            .disabled(!isInputEnabled)
+                    }
+                    .frame(width: 100, height: 200)
+                    
+                    .onTapGesture {
+                        checkAnswer()
+                    }
                 }
-
                 
                 Spacer()
                 
@@ -32,6 +44,25 @@ struct PhoneController: View {
             withAnimation {
                 isShowing.toggle()
             }
+        }
+    }
+    
+    func receiveMessage(_ message: String, shouldAllowAnswer: Bool = false) {
+        withAnimation {
+            isShowing = true
+        }
+        
+        self.message = message
+        
+        isInputEnabled = shouldAllowAnswer
+        
+        SoundController.manager.playSound(fileName: "phonebuzz", format: "wav", volume: 2.5)
+    }
+    
+    func checkAnswer() {
+        if message == "asd123" {
+            isInputEnabled = false
+            receiveMessage("Correct!")
         }
     }
 }

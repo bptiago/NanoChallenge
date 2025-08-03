@@ -1,0 +1,6 @@
+[
+    { "text": "You are in the living room.", "awaitsInput": false },
+    { "text": "It's dimly lit and smells of old books.", "awaitsInput": false },
+    { "text": "A grand staircase looms in front of you. Where will you go?", "awaitsInput": true }
+]
+
