@@ -27,13 +27,12 @@ struct ContentView: View {
             
             SceneController(scene: $scene, sceneCounter: $sceneCounter)
                 .environmentObject(storyData)
-                .ignoresSafeArea(.container, edges: .bottom)
 
             PhoneController()
-                .ignoresSafeArea(.container, edges: .bottom)
                 .environmentObject(storyData)
-
+                .safeAreaPadding(.horizontal)
         }
+        .ignoresSafeArea()
     }
 }
 

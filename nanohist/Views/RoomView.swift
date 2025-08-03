@@ -14,8 +14,9 @@ struct RoomView: View {
         ZStack {
             Image(storyNode.image)
                 .resizable()
-            
+                .scaledToFit()            
         }
+        .ignoresSafeArea()
     }
 }
 
