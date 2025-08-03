@@ -8,9 +8,22 @@
 import SwiftUI
 
 struct PhoneController: View {
-    @State var isInputEnabled = false
+    @EnvironmentObject var storyData: StoryData
     @State var isShowing = false
+    
     @State var message: String = ""
+    @State var answer: String = ""
+    
+    @State var narrationCounter: Int = 0
+    var narrationMessage: DialogueLine {
+        storyData.texts[narrationCounter]
+    }
+    
+    var typeField: some View {
+        TextField("", text: $answer, axis: .vertical)
+            .foregroundStyle(.white)
+            .textInputAutocapitalization(.never)
+    }
     
     var body: some View {
         VStack {
@@ -20,17 +33,21 @@ struct PhoneController: View {
                 if isShowing {
                     ZStack {
                         Rectangle()
-                            .transition(.move(edge: .bottom).combined(with: .opacity))
                         
-                        TextField("", text: $message, axis: .vertical)
-                            .foregroundStyle(.white)
-                            .textInputAutocapitalization(.never)
-                            .disabled(!isInputEnabled)
+                        VStack {
+                            Text(message)
+                                .foregroundStyle(.white)
+                            
+                            if narrationMessage.awaitsInput {
+                                typeField
+                            }
+
+                        }
                     }
+                    .transition(.move(edge: .bottom))
                     .frame(width: 100, height: 200)
-                    
                     .onTapGesture {
-                        checkAnswer()
+                        narrationMessage.awaitsInput ? checkAnswer() : nextMessage()
                     }
                 }
                 
@@ -40,6 +57,13 @@ struct PhoneController: View {
                     .frame(width: 100, height: 100)
             }
         }
+        .onAppear() {
+            Task {
+                sleep(2)
+                receiveMessage()
+            }
+        }
+        
         .onTapGesture {
             withAnimation {
                 isShowing.toggle()
@@ -47,26 +71,29 @@ struct PhoneController: View {
         }
     }
     
-    func receiveMessage(_ message: String, shouldAllowAnswer: Bool = false) {
+    func receiveMessage() {
         withAnimation {
             isShowing = true
         }
         
-        self.message = message
+        message = narrationMessage.text
+                
+        SoundController.manager.playSound(fileName: "phonebuzz", format: "wav", volume: 2.0)
+    }
+    
+    func nextMessage() {
+        if narrationCounter >= storyData.texts.count - 1 {
+            return
+        }
         
-        isInputEnabled = shouldAllowAnswer
-        
-        SoundController.manager.playSound(fileName: "phonebuzz", format: "wav", volume: 2.5)
+        narrationCounter += 1
+        receiveMessage()
     }
     
     func checkAnswer() {
-        if message == "asd123" {
-            isInputEnabled = false
-            receiveMessage("Correct!")
+        if answer == narrationMessage.answer {
+            nextMessage()
+            answer = ""
         }
     }
-}
-
-#Preview {
-    PhoneController()
 }

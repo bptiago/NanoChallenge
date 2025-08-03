@@ -1,9 +1,9 @@
 {
   "livingRoom": {
     "dialog": [
-      { "text": "You are in the living room.", "awaitsInput": false },
-      { "text": "It's dimly lit and smells of old books.", "awaitsInput": false },
-      { "text": "A grand staircase looms in front of you. Where will you go?", "awaitsInput": true }
+        { "text": "You are in the living room.", "awaitsInput": false, "answer": null },
+        { "text": "It's dimly lit and smells of old books.", "awaitsInput": false, "answer": null },
+        { "text": "A grand staircase looms in front of you. Where will you go?", "awaitsInput": true, "answer": "asd123" },
     ],
     "image": "room",
     "directions": ["forward"]
@@ -11,7 +11,7 @@
   "stairs": {
     "dialog": [
       { "text": "You ascend the creaking stairs.", "awaitsInput": false },
-      { "text": "The path ahead is blocked. You must go back.", "awaitsInput": true }
+      { "text": "The path ahead is blocked. You must go back.", "awaitsInput": true, "answer": "asd123" }
     ],
     "image": "hallway",
     "directions": ["forward", "backward"]
@@ -19,7 +19,7 @@
   "basement": {
     "dialog": [
       { "text": "You've found the basement. It's damp and cold.", "awaitsInput": false },
-      { "text": "The only way out is back the way you came.", "awaitsInput": true }
+      { "text": "The only way out is back the way you came.", "awaitsInput": true, "answer": "asd123" }
     ],
     "image": "room",
     "directions": ["backward"]

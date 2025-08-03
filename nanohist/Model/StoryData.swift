@@ -16,6 +16,7 @@ enum SceneKey: String, Codable {
 struct DialogueLine: Codable {
     let text: String
     let awaitsInput: Bool
+    let answer: String?
 }
 
 struct StoryNode: Codable {
