@@ -26,6 +26,8 @@ struct StoryNode: Codable {
 }
 
 class StoryData: ObservableObject {
+    var isGameFinished: Bool = false
+    
     var nodes: [SceneKey: StoryNode] {
         let json = loadFile("Story")
         return decodeScenes(json)
@@ -36,7 +38,7 @@ class StoryData: ObservableObject {
         return decodePhoneTexts(json)
     }
     
-    func loadFile(_ file: String) -> Data {
+    func loadFile(_ file: String, type: String = "json") -> Data {
         guard let url = Bundle.main.url(forResource: file, withExtension: "json") else {
             fatalError("Failed to locate \(file) in bundle")
         }

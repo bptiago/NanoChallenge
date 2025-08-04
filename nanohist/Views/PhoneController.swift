@@ -21,8 +21,9 @@ struct PhoneController: View {
     
     var typeField: some View {
         TextField("", text: $answer, axis: .vertical)
-            .foregroundStyle(.white)
+            .foregroundStyle(.black)
             .textInputAutocapitalization(.never)
+            .font(.custom("Star4", size: 14))
     }
     
     var body: some View {
@@ -30,31 +31,38 @@ struct PhoneController: View {
             Spacer()
             HStack(alignment: .bottom) {
                 
+                Image(.phoneflip)
+                    .resizable()
+                    .frame(width: 80, height: 80)
+                
+                Spacer()
+                
                 if isShowing {
                     ZStack {
-                        Rectangle()
+                        Image(.phone)
+                            .resizable()
+                            .scaledToFit()
                         
-                        VStack {
+                        VStack(alignment: .leading) {
                             Text(message)
-                                .foregroundStyle(.white)
+                                .font(.custom("Star4", size: 14))
+                                .foregroundStyle(.black)
                             
                             if narrationMessage.awaitsInput {
                                 typeField
                             }
-
+                            
                         }
+                        .frame(width: 130)
+                        .offset(x: 25, y: -10)
+                        .rotationEffect(.degrees(11.5))
                     }
+                    .frame(width: 300)
                     .transition(.move(edge: .bottom))
-                    .frame(width: 100, height: 200)
                     .onTapGesture {
                         narrationMessage.awaitsInput ? checkAnswer() : nextMessage()
                     }
                 }
-                
-                Spacer()
-                
-                Rectangle()
-                    .frame(width: 100, height: 100)
             }
         }
         .onAppear() {
@@ -77,8 +85,12 @@ struct PhoneController: View {
         }
         
         message = narrationMessage.text
-                
+        
         SoundController.manager.playSound(fileName: "phonebuzz", format: "wav", volume: 2.0)
+        
+        if narrationCounter >= storyData.texts.count - 1 {
+            storyData.isGameFinished = true
+        }
     }
     
     func nextMessage() {
@@ -91,9 +103,13 @@ struct PhoneController: View {
     }
     
     func checkAnswer() {
-        if answer == narrationMessage.answer {
+        let _answer = answer.lowercased()
+        
+        if _answer.contains(narrationMessage.answer!.lowercased()) {
             nextMessage()
             answer = ""
+        } else {
+            answer = "Try again:"
         }
     }
 }

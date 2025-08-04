@@ -13,7 +13,7 @@
       { "text": "You ascend the creaking stairs.", "awaitsInput": false },
       { "text": "The path ahead is blocked. You must go back.", "awaitsInput": true, "answer": "asd123" }
     ],
-    "image": "hallway",
+    "image": "stairs",
     "directions": ["forward", "backward"]
   },
   "basement": {
@@ -21,7 +21,7 @@
       { "text": "You've found the basement. It's damp and cold.", "awaitsInput": false },
       { "text": "The only way out is back the way you came.", "awaitsInput": true, "answer": "asd123" }
     ],
-    "image": "room",
+    "image": "storage",
     "directions": ["backward"]
   }
 }

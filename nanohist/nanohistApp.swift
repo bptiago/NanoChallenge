@@ -9,6 +9,9 @@ import SwiftUI
 
 @main
 struct nanohistApp: App {
+    
+    private let storyData = StoryData()
+
     var body: some Scene {
         WindowGroup {
             ContentView()

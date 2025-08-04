@@ -39,9 +39,10 @@ struct SceneController: View {
                     
                     updateScene()
                 } label: {
-                    Rectangle()
-                        .fill(Color.red)
+                    Image(.arrow)
+                        .resizable()
                         .frame(width: 50, height: 50)
+                        .rotationEffect(direction == .backward ? .degrees(180) : .degrees(0))
                 }
                 
                 if direction == .forward {

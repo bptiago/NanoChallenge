@@ -7,8 +7,6 @@
 
 import SwiftUI
 
-// TODO: UNIR FUNÇÕES CLASSES QUE MEXEM COM ARQUIVOS (SOUNDCONTROLLER E STORY DATA)
-
 struct ContentView: View {
     @State var sceneCounter: Int = 0
     @State var scene: SceneKey = .livingRoom
@@ -16,21 +14,16 @@ struct ContentView: View {
     
     var body: some View {
         ZStack {
-            switch scene {
-            case .livingRoom:
-                RoomView(storyNode: storyData.nodes[scene]!)
-            case .stairs:
-                RoomView(storyNode: storyData.nodes[scene]!)
-            case .basement:
-                RoomView(storyNode: storyData.nodes[scene]!)
-            }
+            RoomView(storyNode: storyData.nodes[scene]!)
+                .environmentObject(storyData)
             
             SceneController(scene: $scene, sceneCounter: $sceneCounter)
                 .environmentObject(storyData)
+                .safeAreaPadding(.vertical)
 
             PhoneController()
                 .environmentObject(storyData)
-                .safeAreaPadding(.horizontal)
+                .safeAreaPadding(.horizontal, 40)
         }
         .ignoresSafeArea()
     }
