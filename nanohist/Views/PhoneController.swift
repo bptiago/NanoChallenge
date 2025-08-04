@@ -105,6 +105,10 @@ struct PhoneController: View {
     func checkAnswer() {
         let _answer = answer.lowercased()
         
+        if _answer.isEmpty {
+            return
+        }
+        
         if _answer.contains(narrationMessage.answer!.lowercased()) {
             nextMessage()
             answer = ""
